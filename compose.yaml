@@ -1,0 +1,6 @@
+services:
+  rhel:
+    image: rhel
+    volumes:
+      - ./data:/home/data
+      
