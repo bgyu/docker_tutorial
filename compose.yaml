@@ -4,3 +4,24 @@ services:
     volumes:
       - ./data:/home/data
       
+  ubuntu:
+    image: ubuntu:latest
+    container_name: my-container
+    environment:
+      - USER_NAME=myuser
+      - USER_EMAIL=myuser@example.com
+      - HOST_IP=1.2.3.4
+    volumes:
+      - ./data:/home/myuser/data
+    command: /bin/bash -c " \
+      useradd -m -s /bin/bash $USER_NAME && \
+      usermod -aG sudo $USER_NAME && \
+      echo 'export ENV_VAR=value' >> /home/$USER_NAME/.bashrc && \
+      echo 'export ANOTHER_ENV_VAR=another_value' >> /home/$USER_NAME/.bashrc && \
+      git config --global user.name '$USER_NAME' && \
+      git config --global user.email '$USER_EMAIL' && \
+      echo '$HOST_IP helloworld.com' >> /etc/hosts && \
+      su - $USER_NAME && \
+      cd ~ && \
+      /bin/bash"
+      
