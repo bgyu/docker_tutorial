@@ -80,3 +80,16 @@ This will mount my-data in current directory to /my-data in container, and the d
 With volume mount, you can't access its data directly in your host system, but it has better performance.
 With bind mount, you can access the data directly in your host system, but it has poor performance sometimes, especially with lots of read and write.
 
+Combine volume mount and bind mount, example:
+```bash
+# With custom postresql.conf
+docker run -d --rm \                                        # -d: run as deamon
+-v pgdata:/var/lib/postgresql/data \                        # volume mount
+-v ${PWD}/postgres.conf:/etc/postgresql/postgresql.conf \   # bind mount
+-e POSTGRESS_PASSWORD=foobarbaz \                           # -e: environment variable
+-p 5432:5432 \                                              # -p: map ports from host to container
+postgres:15.1-alpine -c 'config-file/etc/postgresql/postgresql.conf'  # Run with custom configuration
+```
+
+# References
+https://github.com/sidpalas/devops-directive-docker-course
